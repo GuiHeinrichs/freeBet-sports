@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,6 +14,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import GetAllSports from '@/services/get-sports';
 
 export default function Header() {
+  const router = useRouter();
+
+  const handleLoginClick = () => {
+    router.push('/login');
+  };
+
   const [sportsDescriptions, setSportDescriptions] = useState([]);
   const [sportsInformations, setSportsInformations] = useState([]);
   
@@ -56,17 +63,16 @@ export default function Header() {
           <div className='flex justify-end items-center'>
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Avatar className="size-8">
-                  <AvatarImage src="https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/hipster_beard_male_man-1024.png" />
+                <Avatar className="size-9">
+                  <AvatarImage src="https://cdn4.iconfinder.com/data/icons/evil-icons-user-interface/64/avatar-512.png" />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
+                <DropdownMenuLabel>Bem vindo!</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Perfil</DropdownMenuItem>
-                <DropdownMenuItem>Preferencias</DropdownMenuItem>
-                <DropdownMenuItem>Sair</DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLoginClick}>Entrar</DropdownMenuItem>
+                <DropdownMenuItem>Registrar-se</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
             
