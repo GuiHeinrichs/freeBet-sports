@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import GetAllEvents from "@/services/get-events";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from 'react';
+import GetAllEvents from '@/services/get-events';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faFutbol,
   faGolfBallTee,
@@ -10,7 +10,7 @@ import {
   faBaseballBatBall,
   faHandFist,
   faHockeyPuck,
-} from "@fortawesome/free-solid-svg-icons";
+} from '@fortawesome/free-solid-svg-icons';
 import {
   Card,
   CardContent,
@@ -18,7 +18,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
 
 export default function LeftSide() {
   const [soccerEvents, setSoccerEvents] = useState([]);
@@ -30,35 +30,35 @@ export default function LeftSide() {
   const [hockeyEvents, setHockeyEvents] = useState([]);
 
   const mainSoccerLeaguesKeys = [
-    "soccer_epl", // English Premier League
-    "soccer_spain_la_liga", // La Liga - Spain
-    "soccer_conmebol_copa_libertadores", // Libertadores da america
-    "soccer_brazil_campeonato", // Brazil Série A
+    'soccer_epl', // English Premier League
+    'soccer_spain_la_liga', // La Liga - Spain
+    'soccer_conmebol_copa_libertadores', // Libertadores da america
+    'soccer_brazil_campeonato', // Brazil Série A
   ];
 
   const golfTournamentKeys = [
-    "golf_masters_tournament_winner",
-    "golf_pga_championship_winner",
-    "golf_the_open_championship_winner",
-    "golf_us_open_winner",
+    'golf_masters_tournament_winner',
+    'golf_pga_championship_winner',
+    'golf_the_open_championship_winner',
+    'golf_us_open_winner',
   ];
 
-  const mainMmaKeys = ["mma_mixed_martial_arts"];
+  const mainMmaKeys = ['mma_mixed_martial_arts'];
 
   const mainFootballLeaguesKeys = [
-    "americanfootball_nfl", // NFL
+    'americanfootball_nfl', // NFL
   ];
 
   const mainBasketLeaguesKeys = [
-    "basketball_nba", // NBA
+    'basketball_nba', // NBA
   ];
 
   const mainBaseballLeaguesKeys = [
-    "baseball_mlb", // MLB
+    'baseball_mlb', // MLB
   ];
 
   const mainHockeyLeaguesKeys = [
-    "icehockey_nhl", // NHL
+    'icehockey_nhl', // NHL
   ];
 
   useEffect(() => {
@@ -87,49 +87,49 @@ export default function LeftSide() {
       events.map((event, index) => (
         <div
           key={index}
-          className="hover:bg-gray-900 hover:scale-105 p-2 ease-in duration-200 rounded-md"
+          className='rounded-md p-2 duration-200 ease-in hover:scale-105 hover:bg-gray-900'
         >
-          <p className="text-lg">{event.sport_title}</p>
-          <p className="text-sm">
+          <p className='text-lg'>{event.sport_title}</p>
+          <p className='text-sm'>
             {event.home_team} x {event.away_team}
           </p>
-          <p className="text-sm text-[#94a3b8]">
+          <p className='text-sm text-[#94a3b8]'>
             {new Date(event.commence_time).toLocaleString()}
           </p>
         </div>
       ))
     ) : (
-      <div className="flex flex-row flex-wrap justify-center space-y-2">
+      <div className='flex flex-row flex-wrap justify-center space-y-2'>
         <p>Nenhuma partida foi encontrada.</p>
       </div>
     );
 
   return (
-    <Tabs defaultValue="soccer">
-      <TabsList className="flex justify-center w-full">
-        <TabsTrigger value="soccer">
+    <Tabs defaultValue='soccer'>
+      <TabsList className='flex w-full justify-center'>
+        <TabsTrigger value='soccer'>
           <FontAwesomeIcon icon={faFutbol} />
         </TabsTrigger>
-        <TabsTrigger value="golf">
+        <TabsTrigger value='golf'>
           <FontAwesomeIcon icon={faGolfBallTee} />
         </TabsTrigger>
-        <TabsTrigger value="mma">
+        <TabsTrigger value='mma'>
           <FontAwesomeIcon icon={faHandFist} />
         </TabsTrigger>
-        <TabsTrigger value="football">
+        <TabsTrigger value='football'>
           <FontAwesomeIcon icon={faFootball} />
         </TabsTrigger>
-        <TabsTrigger value="basket">
+        <TabsTrigger value='basket'>
           <FontAwesomeIcon icon={faBasketball} />
         </TabsTrigger>
-        <TabsTrigger value="baseball">
+        <TabsTrigger value='baseball'>
           <FontAwesomeIcon icon={faBaseballBatBall} />
         </TabsTrigger>
-        <TabsTrigger value="hockey">
+        <TabsTrigger value='hockey'>
           <FontAwesomeIcon icon={faHockeyPuck} />
         </TabsTrigger>
       </TabsList>
-      <TabsContent value="soccer">
+      <TabsContent value='soccer'>
         <Card>
           <CardHeader>
             <CardTitle>Proximas partidas</CardTitle>
@@ -137,13 +137,13 @@ export default function LeftSide() {
               Próximas partidas dos principais campeonatos.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-2">
+          <CardContent className='space-y-2'>
             {renderEvents(soccerEvents)}
           </CardContent>
           <CardFooter></CardFooter>
         </Card>
       </TabsContent>
-      <TabsContent value="golf">
+      <TabsContent value='golf'>
         <Card>
           <CardHeader>
             <CardTitle>Proximas partidas</CardTitle>
@@ -151,13 +151,13 @@ export default function LeftSide() {
               Próximas partidas dos principais campeonatos.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-2">
+          <CardContent className='space-y-2'>
             {renderEvents(golfEvents)}
           </CardContent>
           <CardFooter></CardFooter>
         </Card>
       </TabsContent>
-      <TabsContent value="mma">
+      <TabsContent value='mma'>
         <Card>
           <CardHeader>
             <CardTitle>Proximas partidas</CardTitle>
@@ -165,13 +165,13 @@ export default function LeftSide() {
               Próximas partidas dos principais campeonatos.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-2">
+          <CardContent className='space-y-2'>
             {renderEvents(mmaEvents)}
           </CardContent>
           <CardFooter></CardFooter>
         </Card>
       </TabsContent>
-      <TabsContent value="football">
+      <TabsContent value='football'>
         <Card>
           <CardHeader>
             <CardTitle>Proximas partidas</CardTitle>
@@ -179,13 +179,13 @@ export default function LeftSide() {
               Próximas partidas dos principais campeonatos.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-2">
+          <CardContent className='space-y-2'>
             {renderEvents(footballEvents)}
           </CardContent>
           <CardFooter></CardFooter>
         </Card>
       </TabsContent>
-      <TabsContent value="basket">
+      <TabsContent value='basket'>
         <Card>
           <CardHeader>
             <CardTitle>Proximas partidas</CardTitle>
@@ -193,13 +193,13 @@ export default function LeftSide() {
               Próximas partidas dos principais campeonatos.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-2">
+          <CardContent className='space-y-2'>
             {renderEvents(basketEvents)}
           </CardContent>
           <CardFooter></CardFooter>
         </Card>
       </TabsContent>
-      <TabsContent value="baseball">
+      <TabsContent value='baseball'>
         <Card>
           <CardHeader>
             <CardTitle>Proximas partidas</CardTitle>
@@ -207,13 +207,13 @@ export default function LeftSide() {
               Próximas partidas dos principais campeonatos.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-2">
+          <CardContent className='space-y-2'>
             {renderEvents(baseballEvents)}
           </CardContent>
           <CardFooter></CardFooter>
         </Card>
       </TabsContent>
-      <TabsContent value="hockey">
+      <TabsContent value='hockey'>
         <Card>
           <CardHeader>
             <CardTitle>Proximas partidas</CardTitle>
@@ -221,7 +221,7 @@ export default function LeftSide() {
               Próximas partidas dos principais campeonatos.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-2">
+          <CardContent className='space-y-2'>
             {renderEvents(hockeyEvents)}
           </CardContent>
           <CardFooter></CardFooter>
