@@ -8,6 +8,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircle } from '@fortawesome/free-solid-svg-icons';
 
 // Função de re-tentativa com atraso
 const fetchWithRetry = async (key, retries = 3, delay = 1000) => {
@@ -95,12 +97,29 @@ export default function RightSide() {
                     key={index}
                     className='mb-4 ml-4 flex flex-col gap-y-1 hover:text-gray-300'
                   >
-                    <div>
+                    <div className='flex flex-nowrap items-center gap-2 text-sm'>
+                      {!score.completed ? (
+                        <div className='text-xs'>
+                          {' '}
+                          <FontAwesomeIcon
+                            fade
+                            icon={faCircle}
+                            style={{ color: '#14d006' }}
+                          />
+                        </div>
+                      ) : (
+                        <div className='text-xs'>
+                          <FontAwesomeIcon
+                            icon={faCircle}
+                            style={{ color: '#9e9e9e' }}
+                          />
+                        </div>
+                      )}
                       {score.home_team} vs {score.away_team}
                     </div>
                     <div className='flex flex-col whitespace-nowrap'>
                       {score.scores.map((result, resultIndex) => (
-                        <div key={resultIndex} className='ml-4 text-xs'>
+                        <div key={resultIndex} className='ml-6 text-xs'>
                           {result.name}: {result.score}
                         </div>
                       ))}

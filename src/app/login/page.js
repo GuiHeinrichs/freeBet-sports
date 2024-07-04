@@ -1,16 +1,19 @@
 'use client';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 
 export default function Login() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleOnClickLogin = (event) => {
     event.preventDefault();
     const data = { email, password };
+    router.push('/');
     console.log(data);
   };
 
