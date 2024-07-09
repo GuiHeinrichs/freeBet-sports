@@ -8,6 +8,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 
@@ -45,14 +51,17 @@ const fetchWithLimit = async (keys, limit = 2) => {
 
 export default function RightSide() {
   const [soccerScores, setSoccerScores] = useState([]);
-  // const [basketScores, setBasketScores] = useState([]);
-  // const [footballScores, setFootballScores] = useState([]);
+  const [basketScores, setBasketScores] = useState([]);
 
   const mainSoccerLeaguesKeys = [
     'soccer_epl', // English Premier League
     'soccer_spain_la_liga', // La Liga - Spain
     'soccer_conmebol_copa_libertadores', // Libertadores da america
     'soccer_brazil_campeonato', // Brazil Série A
+  ];
+
+  const mainBasketLeaguesKeys = [
+    'basketball_nba', // NBA
   ];
 
   useEffect(() => {
@@ -66,8 +75,7 @@ export default function RightSide() {
     };
 
     fetchEvents(mainSoccerLeaguesKeys, setSoccerScores);
-    // fetchEvents(mainFootballLeaguesKeys, setFootballScores);
-    // fetchEvents(mainBasketLeaguesKeys, setBasketScores);
+    fetchEvents(mainBasketLeaguesKeys, setBasketScores);
   }, []);
 
   const groupBySportTitle = (scores) => {
@@ -80,54 +88,145 @@ export default function RightSide() {
     }, {});
   };
 
-  const groupedScores = groupBySportTitle(soccerScores);
+  const groupedSoccerScores = groupBySportTitle(soccerScores);
+  const groupedBasketScores = groupBySportTitle(basketScores);
 
   return (
-    <div className='h-full w-11/12 rounded-xl bg-gray-900 p-4'>
-      <h1 className='text-lg'>Ultimos resultados</h1>
+    <div className='h-fit w-11/12 rounded-xl bg-gray-900 p-4'>
+      <h1 className='text-lg'>Resultados e partidas em andamento</h1>
       <Accordion type='single' collapsible>
         <AccordionItem value='item-1'>
           <AccordionTrigger>Futebol</AccordionTrigger>
           <AccordionContent>
-            {Object.entries(groupedScores).map(([sportTitle, scores]) => (
-              <div key={sportTitle}>
-                <h1 className='mb-2 text-xl font-bold'>{sportTitle}</h1>
-                {scores.map((score, index) => (
-                  <div
-                    key={index}
-                    className='mb-4 ml-4 flex flex-col gap-y-1 hover:text-gray-300'
-                  >
-                    <div className='flex flex-nowrap items-center gap-2 text-sm'>
-                      {!score.completed ? (
-                        <div className='text-xs'>
-                          {' '}
-                          <FontAwesomeIcon
-                            fade
-                            icon={faCircle}
-                            style={{ color: '#14d006' }}
-                          />
+            {Object.entries(groupedSoccerScores).length ? (
+              Object.entries(groupedSoccerScores).map(
+                ([sportTitle, scores]) => (
+                  <div key={sportTitle}>
+                    <h1 className='mb-2 text-xl font-bold'>{sportTitle}</h1>
+                    {scores.map((score, index) => (
+                      <div
+                        key={index}
+                        className='mb-4 ml-4 flex flex-col gap-y-1 hover:text-gray-300'
+                      >
+                        <div className='flex flex-nowrap items-center gap-2 text-sm'>
+                          {!score.completed ? (
+                            <div className='text-xs'>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <FontAwesomeIcon
+                                      fade
+                                      icon={faCircle}
+                                      style={{ color: '#14d006' }}
+                                    />
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Em andamento</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </div>
+                          ) : (
+                            <div className='text-xs'>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <FontAwesomeIcon
+                                      icon={faCircle}
+                                      style={{ color: '#9e9e9e' }}
+                                    />
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Finalizada</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </div>
+                          )}
+                          {score.home_team} vs {score.away_team}
                         </div>
-                      ) : (
-                        <div className='text-xs'>
-                          <FontAwesomeIcon
-                            icon={faCircle}
-                            style={{ color: '#9e9e9e' }}
-                          />
+                        <div className='flex flex-col whitespace-nowrap'>
+                          {score.scores.map((result, resultIndex) => (
+                            <div key={resultIndex} className='ml-6 text-xs'>
+                              {result.name}: {result.score}
+                            </div>
+                          ))}
                         </div>
-                      )}
-                      {score.home_team} vs {score.away_team}
-                    </div>
-                    <div className='flex flex-col whitespace-nowrap'>
-                      {score.scores.map((result, resultIndex) => (
-                        <div key={resultIndex} className='ml-6 text-xs'>
-                          {result.name}: {result.score}
-                        </div>
-                      ))}
-                    </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            ))}
+                ),
+              )
+            ) : (
+              <p>Nenhuma partida encontrada.</p>
+            )}
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value='item-2'>
+          <AccordionTrigger>Basquete</AccordionTrigger>
+          <AccordionContent>
+            {Object.entries(groupedBasketScores).length ? (
+              Object.entries(groupedBasketScores).map(
+                ([sportTitle, scores]) => (
+                  <div key={sportTitle}>
+                    <h1 className='mb-2 text-xl font-bold'>{sportTitle}</h1>
+                    {scores.map((score, index) => (
+                      <div
+                        key={index}
+                        className='mb-4 ml-4 flex flex-col gap-y-1 hover:text-gray-300'
+                      >
+                        <div className='flex flex-nowrap items-center gap-2 text-sm'>
+                          {!score.completed ? (
+                            <div className='text-xs'>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <FontAwesomeIcon
+                                      fade
+                                      icon={faCircle}
+                                      style={{ color: '#14d006' }}
+                                    />
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Em andamento</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </div>
+                          ) : (
+                            <div className='text-xs'>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <FontAwesomeIcon
+                                      icon={faCircle}
+                                      style={{ color: '#9e9e9e' }}
+                                    />
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Finalizada</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </div>
+                          )}
+                          {score.home_team} vs {score.away_team}
+                        </div>
+                        <div className='flex flex-col whitespace-nowrap'>
+                          {score.scores.map((result, resultIndex) => (
+                            <div key={resultIndex} className='ml-6 text-xs'>
+                              {result.name}: {result.score}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ),
+              )
+            ) : (
+              <p>Nenhuma partida encontrada.</p>
+            )}
           </AccordionContent>
         </AccordionItem>
       </Accordion>
