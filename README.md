@@ -7,6 +7,7 @@ FreeBet Sports is a sports site that deliver news, matches results, betting tips
 - Tailwind
 - ShadUI
 - FontAwesomeIcons
+- Axios
 
 # External Services
 - The Odds API
