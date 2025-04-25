@@ -12,9 +12,7 @@ export default function Login() {
 
   const handleOnClickLogin = (event) => {
     event.preventDefault();
-    const data = { email, password };
     router.push('/');
-    console.log(data);
   };
 
   return (

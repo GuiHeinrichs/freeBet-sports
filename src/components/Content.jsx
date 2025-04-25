@@ -3,7 +3,14 @@ import React, { useState, useEffect } from 'react';
 import Central from './Central';
 import LeftSide from './LeftSide';
 import RightSide from './RightSide';
-import { US, BR, AR, CA } from 'country-flag-icons/react/3x2';
+// import { US, BR, AR, CA } from 'country-flag-icons/react/3x2';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faFutbol,
+  faFootball,
+  faBasketball,
+  faHandFist,
+} from '@fortawesome/free-solid-svg-icons';
 
 import GETSportsNewsByCountry from '@/services/newsAPI/country-sports-news';
 import { Skeleton } from './ui/skeleton';
@@ -11,9 +18,10 @@ import { useToast } from '@/components/ui/use-toast';
 
 export default function Content() {
   const [headlineNews, setHeadlineNews] = useState([]);
+  const [clickedFilter, setClickedFilter] = useState('soccer');
 
   useEffect(() => {
-    GETSportsNewsByCountry(`br`).then((response) => {
+    GETSportsNewsByCountry(clickedFilter).then((response) => {
       if (response) {
         setHeadlineNews(response.articles);
       }
@@ -22,13 +30,14 @@ export default function Content() {
 
   const { toast } = useToast();
 
-  const fetchNewsByCountry = (countryCode) => {
-    GETSportsNewsByCountry(countryCode).then((response) => {
+  const fetchNewsByCountry = (context) => {
+    setClickedFilter(context);
+    GETSportsNewsByCountry(context).then((response) => {
       if (response) {
         setHeadlineNews(response.articles);
         toast({
           title: 'Destaques atualizados',
-          description: structuredDescription(countryCode),
+          description: structuredDescription('br'),
         });
       }
     });
@@ -52,37 +61,62 @@ export default function Content() {
 
   return (
     <main>
-      <div className='mt-4 grid h-screen w-screen grid-cols-4 gap-4'>
+      <div className='mt-4 grid h-full w-full grid-cols-4 gap-4'>
         <div className='flex h-96 w-full justify-center'>
           <LeftSide />
         </div>
         <div className='col-span-2 flex w-full flex-col justify-center gap-y-4'>
-          <div className='flex items-center justify-between'>
-            <h1 className='text-3xl font-semibold'>Destaques</h1>
-            <div className='flex items-center justify-end space-x-3'>
-              <US
-                title='United States'
-                className='size-8 cursor-pointer'
-                onClick={() => fetchNewsByCountry('us')}
-              />
-              <BR
-                title='Brasil'
-                className='size-8 cursor-pointer'
-                onClick={() => fetchNewsByCountry('br')}
-              />
-              <CA
-                title='Canada'
-                className='size-8 cursor-pointer'
-                onClick={() => fetchNewsByCountry('ca')}
-              />
-              <AR
-                title='Argentina'
-                className='size-8 cursor-pointer'
-                onClick={() => fetchNewsByCountry('ar')}
-              />
+          <div className='grid grid-cols-2'>
+            <div>
+              <h1 className='text-3xl font-semibold'>Destaques</h1>
+            </div>
+            <div className='flex items-center justify-end space-x-12'>
+              <div
+                className={`cursor-pointer duration-300 ease-in-out ${
+                  clickedFilter === 'NFL' ? 'text-slate-800' : 'text-white'
+                } hover:text-slate-800`}
+                onClick={() => fetchNewsByCountry('NFL')}
+              >
+                <FontAwesomeIcon className='cursor-pointer' icon={faFootball} />
+              </div>
+              <div
+                className={`cursor-pointer duration-300 ease-in-out ${
+                  clickedFilter === 'soccer' ? 'text-slate-800' : 'text-white'
+                } hover:text-slate-800`}
+                onClick={() => fetchNewsByCountry('soccer')}
+              >
+                <FontAwesomeIcon className='cursor-pointer' icon={faFutbol} />
+              </div>
+              <div
+                className={`cursor-pointer duration-300 ease-in-out ${
+                  clickedFilter === 'NBA' ? 'text-slate-800' : 'text-white'
+                } hover:text-slate-800`}
+                onClick={() => fetchNewsByCountry('NBA')}
+              >
+                <FontAwesomeIcon
+                  className='cursor-pointer'
+                  icon={faBasketball}
+                />
+              </div>
+              <div
+                className={`cursor-pointer duration-300 ease-in-out ${
+                  clickedFilter === 'MMA' ? 'text-slate-800' : 'text-white'
+                } hover:text-slate-800`}
+                onClick={() => fetchNewsByCountry('MMA')}
+              >
+                <FontAwesomeIcon className='cursor-pointer' icon={faHandFist} />
+              </div>
+              <div
+                className={`text-md cursor-pointer font-semibold duration-300 ease-in-out ${
+                  clickedFilter === 'Formula1' ? 'text-slate-800' : 'text-white'
+                } hover:text-slate-800`}
+                onClick={() => fetchNewsByCountry('Formula1')}
+              >
+                F1
+              </div>
             </div>
           </div>
-          {!headlineNews.length ? (
+          {!headlineNews?.length ? (
             <Skeleton className='h-full w-full' />
           ) : (
             headlineNews.map((actualNews, index) => (
@@ -92,7 +126,7 @@ export default function Content() {
                 title={actualNews.title}
                 url={actualNews.url}
                 date={actualNews.publishedAt}
-                image={actualNews.urlToImage}
+                image={actualNews.image}
               />
             ))
           )}

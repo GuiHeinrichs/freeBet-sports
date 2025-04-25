@@ -21,9 +21,7 @@ export default function Login() {
 
   const handleOnClickRegister = (event) => {
     event.preventDefault();
-    const data = { email, password, passwordAgain };
     router.push('/');
-    console.log(data);
   };
 
   return (
