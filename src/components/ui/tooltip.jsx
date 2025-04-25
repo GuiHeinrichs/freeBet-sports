@@ -26,4 +26,11 @@ const TooltipContent = React.forwardRef(
 );
 TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 
+import PropTypes from 'prop-types';
+
+TooltipContent.propTypes = {
+  className: PropTypes.string,
+  sideOffset: PropTypes.number,
+};
+
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };
